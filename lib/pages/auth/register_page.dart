@@ -16,6 +16,7 @@ import 'package:task_api_flutter/pages/auth/login_page.dart';
 import 'package:task_api_flutter/pages/auth/verification_code_page.dart';
 import 'package:task_api_flutter/resources/app_color.dart';
 import 'package:task_api_flutter/services/remote/auth_services.dart';
+import 'package:task_api_flutter/services/remote/body/otp_body.dart';
 import 'package:task_api_flutter/services/remote/body/register_body.dart';
 import 'package:task_api_flutter/services/remote/code_error.dart';
 import 'package:task_api_flutter/utils/validator.dart';
@@ -32,6 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  FocusNode nameFocus = FocusNode();
   AuthServices authServices = AuthServices();
   final formKey = GlobalKey<FormState>();
   File? fileAvatar;
@@ -64,28 +66,6 @@ class _RegisterPageState extends State<RegisterPage> {
     return result['body']['file'];
   }
 
-  // Future<String?> uploadAvatar() async {
-  //   if (fileAvatar == null) return null;
-  //   String? value;
-  //   await uploadFile(fileAvatar!).then((response) {
-  //     value = response;
-  //   }).catchError((onError) {
-  //     print('$onError');
-  //     return null;
-  //   });
-  //   return value;
-  // }
-
-  // Future<String?> uploadAvatar() async {
-  //   if (fileAvatar == null) return null;
-  //   return uploadFile(fileAvatar!).then((value) {
-  //     return value;
-  //   }).catchError((onError) {
-  //     print('$onError');
-  //     return null;
-  //   });
-  // }
-
   Future<String?> uploadAvatar() async {
     return fileAvatar != null ? await uploadFile(fileAvatar!) : null;
   }
@@ -104,7 +84,6 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-//api yêu cầu đẩy cái gì thì mình phải viết body theo nó
     RegisterBody body = RegisterBody()
       ..name = nameController.text.trim()
       ..email = emailController.text.trim()
@@ -114,9 +93,11 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() => isLoading = true);
     await Future.delayed(const Duration(milliseconds: 2000));
 
-    authServices.sendOtp(emailController.text.trim()).then((response) {
+    authServices
+        .sendOtp(OtpBody()..email = emailController.text.trim())
+        .then((response) {
       Map<String, dynamic> data = jsonDecode(response.body);
-      if (data['status_code'] == 200) {
+      if (data['success'] == true) {
         print('object code ${data['body']['code']}');
 
         if (!context.mounted) return;
@@ -143,21 +124,23 @@ class _RegisterPageState extends State<RegisterPage> {
           TDSnackBar.error(
               message: (data['message'] as String?)?.toLang ?? '😐'),
         );
-        setState(() => isLoading =
-            false); // chỉ xoay 2s sau đó phải set lại = false chứ ko ngta ko bấm dc
+        setState(() => isLoading = false);
       }
     }).catchError((onError) {
       print('object $onError');
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        // giống  if (!context.mounted) return;
-        showTopSnackBar(
-          context,
-          const TDSnackBar.error(message: 'Server error 😐'),
-        );
-      });
-      setState(() => isLoading =
-          false); // chỉ xoay 2s sau đó phải set lại = false chứ ko ngta ko bấm dc
+      if (!context.mounted) return;
+      showTopSnackBar(
+        context,
+        const TDSnackBar.error(message: 'Server error 😐'),
+      );
     });
+    setState(() => isLoading = false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // nameFocus.requestFocus();
   }
 
   @override
@@ -184,6 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 40.0),
               TdTextField(
                 controller: nameController,
+                focusNode: nameFocus,
                 hintText: 'Full Name',
                 prefixIcon: const Icon(Icons.person, color: AppColor.orange),
                 textInputAction: TextInputAction.next,
@@ -255,10 +239,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   GestureDetector _buildAvatar() {
     return GestureDetector(
-      onTap: isLoading ? null : pickAvatar,
+      onTap: isLoading == true ? null : pickAvatar,
       child: Stack(
         children: [
-          isLoading
+          isLoading == true
               ? CircleAvatar(
                   radius: 34.6,
                   backgroundColor: Colors.orange.shade200,

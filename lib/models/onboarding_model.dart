@@ -12,5 +12,5 @@ final onboardings = [
     ..text = "My Flutter Todo App",
   OnboardingModel()
     ..imagePath = "assets/images/onboarding_3.png"
-    ..text = "Nice To Meet Tín Flutter",
+    ..text = "Tín Flutter Todo App",
 ];

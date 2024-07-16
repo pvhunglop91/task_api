@@ -11,6 +11,7 @@ import 'package:task_api_flutter/pages/auth/login_page.dart';
 import 'package:task_api_flutter/resources/app_color.dart';
 import 'package:task_api_flutter/services/remote/auth_services.dart';
 import 'package:task_api_flutter/services/remote/body/new_password_body.dart';
+import 'package:task_api_flutter/services/remote/body/otp_body.dart';
 import 'package:task_api_flutter/services/remote/code_error.dart';
 import 'package:task_api_flutter/utils/validator.dart';
 
@@ -35,7 +36,7 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
   Future<void> _sendOtp(BuildContext context) async {
     setState(() => isLoading = true);
     await Future.delayed(const Duration(milliseconds: 1200));
-    authServices.sendOtp(widget.email).then((response) {
+    authServices.sendOtp(OtpBody()..email = widget.email).then((response) {
       final data = jsonDecode(response.body);
       if (data['status_code'] == 200) {
         print('object code ${data['body']['code']}');
@@ -75,9 +76,9 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
     setState(() => isLoading = true);
     await Future.delayed(const Duration(seconds: 2));
 
-    final body = NewPasswordBody()
-      ..email = widget.email //widget là do truyền ở màn hình trước sang
-      ..password = passwordController.text //controller la lấy ở text hiện tại
+    NewPasswordBody body = NewPasswordBody()
+      ..email = widget.email
+      ..password = passwordController.text
       ..code = verificationCodeController.text;
 
     authServices.postForgotPassword(body).then((response) {
@@ -90,7 +91,6 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
         );
         // setState(() => isLoading = false);
         Navigator.of(context).pushAndRemoveUntil(
-          //ko được back lại
           MaterialPageRoute(
             builder: (context) => LoginPage(email: widget.email),
           ),

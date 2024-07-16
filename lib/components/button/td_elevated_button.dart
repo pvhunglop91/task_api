@@ -78,7 +78,7 @@ class TdElevatedButton extends StatelessWidget {
         splashColor = splashColor ?? AppColor.yellow.withOpacity(0.6),
         highlightColor = highlightColor ?? AppColor.green.withOpacity(0.6);
 
-  final VoidCallback? onPressed;
+  final Function()? onPressed;
   final double height;
   final Color color;
   final Color borderColor;
@@ -100,8 +100,8 @@ class TdElevatedButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: borderRadius,
-        onTap: isDisable ? null : onPressed,
-        splashColor: splashColor, //di kem inkwell
+        onTap: isDisable ==true ? null : onPressed,
+        splashColor: splashColor,
         highlightColor: highlightColor,
         child: Ink(
           padding: padding,
@@ -118,7 +118,7 @@ class TdElevatedButton extends StatelessWidget {
                 icon!,
                 const SizedBox(width: 4.6),
               ],
-              isDisable
+              isDisable == true
                   ? Center(
                       child: SizedBox.square(
                         dimension: height - 22.0,

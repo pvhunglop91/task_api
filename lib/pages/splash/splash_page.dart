@@ -24,7 +24,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void _checkToken() {
     Timer(const Duration(milliseconds: 2600), () {
-      if (SharedPrefs.isAccessed) {
+      if (SharedPrefs.isAccessed == true) {
         if (SharedPrefs.token != null) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(

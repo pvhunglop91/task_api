@@ -16,8 +16,6 @@ class RegisterBody {
     ..age = json['age'] as int?
     ..code = json['code'] as String?;
 
-
-//bien object thanh map
   Map<String, dynamic> toJson() {
     return {
       'name': name,

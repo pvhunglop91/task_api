@@ -55,7 +55,7 @@ class TdTextField extends StatelessWidget {
           textInputAction: textInputAction,
           validator: validator,
           readOnly: readOnly,
-          autovalidateMode: AutovalidateMode.onUserInteraction, // gõ đến đâu, Validate đến đó
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.6),

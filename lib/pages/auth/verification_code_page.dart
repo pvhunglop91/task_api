@@ -8,6 +8,7 @@ import 'package:task_api_flutter/gen/assets.gen.dart';
 import 'package:task_api_flutter/pages/auth/login_page.dart';
 import 'package:task_api_flutter/resources/app_color.dart';
 import 'package:task_api_flutter/services/remote/auth_services.dart';
+import 'package:task_api_flutter/services/remote/body/otp_body.dart';
 import 'package:task_api_flutter/services/remote/code_error.dart';
 import 'package:task_api_flutter/services/remote/body/register_body.dart';
 
@@ -35,7 +36,9 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
   Future<void> _sendOtp(BuildContext context) async {
     setState(() => isLoading = true);
     await Future.delayed(const Duration(seconds: 2));
-    authServices.sendOtp(widget.registerBody.email ?? '').then((response) {
+    authServices
+        .sendOtp(OtpBody()..email = widget.registerBody.email)
+        .then((response) {
       final data = jsonDecode(response.body);
       if (data['status_code'] == 200) {
         print('object code ${data['body']['code']}');
@@ -71,16 +74,10 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
     setState(() => isLoading = true);
     await Future.delayed(const Duration(seconds: 2));
 
-
-    // RegisterBody postBody = widget.registerBody;
-    // postBody.code = verificationCodeController.text;
-
-  //vi dangki chua co ma code nen phai truyen them ma code
-
     authServices
         .register(widget.registerBody..code = verificationCodeController.text)
         .then((response) {
-      final data = jsonDecode(response.body);
+      Map<String, dynamic> data = jsonDecode(response.body);
       if (data['status_code'] == 200) {
         print('object register success ${data['body']['email']}');
         if (!context.mounted) return;
@@ -136,8 +133,6 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
               Image.asset(Assets.images.todoIcon.path,
                   width: 90.0, fit: BoxFit.cover),
               const SizedBox(height: 46.0),
-
-              //pincode text để làm mã pin
               PinCodeTextField(
                   controller: verificationCodeController,
                   focusNode: focusNode,

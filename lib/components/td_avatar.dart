@@ -4,7 +4,7 @@ import 'package:task_api_flutter/resources/app_color.dart';
 class TdAvatar extends StatelessWidget {
   const TdAvatar({
     super.key,
-    this.avatar, //url trong backend trả về
+    this.avatar,
     this.radius = 26.0,
     this.isActive = false,
   });
@@ -18,7 +18,7 @@ class TdAvatar extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          padding: const EdgeInsets.all(1.0), //đường viên 1px 
+          padding: const EdgeInsets.all(1.0),
           decoration: const BoxDecoration(
               color: AppColor.orange, shape: BoxShape.circle),
           child: ClipRRect(
@@ -28,9 +28,6 @@ class TdAvatar extends StatelessWidget {
               fit: BoxFit.cover,
               width: radius * 2,
               height: radius * 2,
-              //thanh hinh tron, gấp đôi bán kính cong
-
-              //khi có lỗi xảy ra
               errorBuilder: (context, error, stackTrace) {
                 return Container(
                   width: radius * 2,
@@ -41,8 +38,6 @@ class TdAvatar extends StatelessWidget {
                   ),
                 );
               },
-
-              //ảnh khi chưa được tải hoàn chỉnh, thì cho nó hiện cái vòng tròn xoay
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return SizedBox.square(
@@ -67,7 +62,6 @@ class TdAvatar extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: AppColor.white,
             radius: radius / 4.6 + 1.8,
-            //bọc vòng tròn to ra ngoài vòng tròn nhỏ
             child: CircleAvatar(
               backgroundColor: isActive ? AppColor.green : AppColor.yellow,
               radius: radius / 4.6,

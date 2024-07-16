@@ -22,7 +22,7 @@ class TdZoomDrawer extends StatelessWidget {
       mainScreenTapClose: true,
       controller: controller,
       style: DrawerStyle.defaultStyle,
-      menuScreen: menuScreen, //nên hiểu là 2 widget
+      menuScreen: menuScreen,
       mainScreen: screen,
       borderRadius: 24.0,
       showShadow: false,

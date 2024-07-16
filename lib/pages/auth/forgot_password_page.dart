@@ -8,6 +8,7 @@ import 'package:task_api_flutter/gen/assets.gen.dart';
 import 'package:task_api_flutter/pages/auth/create_new_password_page.dart';
 import 'package:task_api_flutter/resources/app_color.dart';
 import 'package:task_api_flutter/services/remote/auth_services.dart';
+import 'package:task_api_flutter/services/remote/body/otp_body.dart';
 import 'package:task_api_flutter/services/remote/code_error.dart';
 import 'package:task_api_flutter/utils/validator.dart';
 
@@ -31,7 +32,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
     setState(() => isLoading = true);
     await Future.delayed(const Duration(milliseconds: 1200));
-    authServices.sendOtp(emailController.text.trim()).then((response) {
+    authServices
+        .sendOtp(OtpBody()..email = emailController.text.trim())
+        .then((response) {
       final data = jsonDecode(response.body);
       if (data['status_code'] == 200) {
         print('object code ${data['body']['code']}');
@@ -66,7 +69,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         const TDSnackBar.error(message: "Server error 😐"),
       );
       setState(() => isLoading = false);
-    }); // ko đẩy dc api sẽ là lỗi này
+    });
   }
 
   @override

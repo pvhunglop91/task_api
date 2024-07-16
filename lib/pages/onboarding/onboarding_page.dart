@@ -23,11 +23,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
     SharedPrefs.isAccessed = true;
   }
 
-  void _changePage(int pageViewIndex) {
-    currentIndex = pageViewIndex;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,14 +48,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 child: PageView(
                   controller: pageController,
                   onPageChanged: (pageViewIndex) {
-                    _changePage(pageViewIndex);
+                    currentIndex = pageViewIndex;
+                    setState(() {});
                   },
-                  // children: [
-                  //   ...onboardings.map((e) {
-                  //     return Image.asset(e.imagePath ?? '',
-                  //         fit: BoxFit.fitHeight);
-                  //   }),
-                  // ],
+                  // children: onboardings
+                  //     .map((e) =>
+                  //         Image.asset(e.imagePath ?? '', fit: BoxFit.fitHeight))
+                  //     .toList(),
                   children: List.generate(
                     onboardings.length,
                     (index) => Image.asset(onboardings[index].imagePath ?? '',

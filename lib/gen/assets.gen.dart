@@ -26,6 +26,18 @@ class $AssetsImagesGen {
   AssetGenImage get defaultAvatar =>
       const AssetGenImage('assets/images/default_avatar.jpg');
 
+  /// File path: assets/images/onboarding_1.png
+  AssetGenImage get onboarding1 =>
+      const AssetGenImage('assets/images/onboarding_1.png');
+
+  /// File path: assets/images/onboarding_2.png
+  AssetGenImage get onboarding2 =>
+      const AssetGenImage('assets/images/onboarding_2.png');
+
+  /// File path: assets/images/onboarding_3.png
+  AssetGenImage get onboarding3 =>
+      const AssetGenImage('assets/images/onboarding_3.png');
+
   /// File path: assets/images/todo_icon.png
   AssetGenImage get todoIcon =>
       const AssetGenImage('assets/images/todo_icon.png');
@@ -35,7 +47,14 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/todo_icon_two.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [defaultAvatar, todoIcon, todoIconTwo];
+  List<AssetGenImage> get values => [
+        defaultAvatar,
+        onboarding1,
+        onboarding2,
+        onboarding3,
+        todoIcon,
+        todoIconTwo
+      ];
 }
 
 class Assets {

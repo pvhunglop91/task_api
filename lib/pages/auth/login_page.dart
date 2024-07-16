@@ -46,13 +46,13 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => isLoading = true);
     await Future.delayed(const Duration(milliseconds: 1200));
 
-    authServices
-        .login(LoginBody()
-          ..email = emailController.text.trim()
-          ..password = passwordController.text)
-        .then((response) {
-      final data = jsonDecode(response.body);
-      if (data['status_code'] == 200) {
+    LoginBody body = LoginBody()
+      ..email = emailController.text.trim()
+      ..password = passwordController.text;
+
+    authServices.login(body).then((response) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      if (data['success'] == true) {
         final token = data['body']['token'];
         SharedPrefs.token = token;
         print('object token $token');
